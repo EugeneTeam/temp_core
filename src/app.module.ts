@@ -1,28 +1,26 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { KnexModule } from 'nest-knexjs';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true
+      envFilePath: '.env',
+      isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      entities: [],
-      migrations: [],
+    KnexModule.forRoot({
+      config: {
+        client: 'mysql',
+        connection: {
+          host: process.env.MYSQL_HOST,
+          port: Number(process.env.MYSQL_PORT),
+          user: process.env.MYSQL_USER,
+          password: process.env.MYSQL_PASSWORD,
+          database: process.env.MYSQL_DB,
+        },
+      },
     }),
-    UserModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
