@@ -6,7 +6,7 @@ exports.up = function (knex) {
     table.uuid('roleUuid').notNullable();
     table.foreign('roleUuid').references('uuid').inTable('roles');
 
-    // table.unique(['roleUuid', 'permissionUuid']);
+    table.unique(['roleUuid', 'permissionUuid']);
   });
 };
 
