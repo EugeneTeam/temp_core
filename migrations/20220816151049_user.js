@@ -7,11 +7,11 @@ exports.up = function (knex) {
       .defaultTo(knex.raw('(UUID())'))
       .notNullable();
     table.enu('status', ['ACTIVE', 'INACTIVE', 'BANNED']).defaultTo('INACTIVE');
-    table.string('activationToken').notNullable();
-    table.string('passwordHash').nullable();
-    table.string('resetPasswordToken').nullable();
-    table.uuid('roleUuid');
-    table.foreign('roleUuid').references('uuid').inTable('roles');
+    table.string('activation_token').notNullable();
+    table.string('password_hash').nullable();
+    table.string('reset_password_token').nullable();
+    table.uuid('role_uuid');
+    table.foreign('role_uuid').references('uuid').inTable('roles');
   });
 };
 

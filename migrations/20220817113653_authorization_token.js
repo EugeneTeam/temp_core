@@ -1,13 +1,13 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('authorizationsTokens', (table) => {
-    table.uuid('userUuid');
-    table.foreign('userUuid').references('uuid').inTable('users');
+  return knex.schema.createTable('authorizations_tokens', (table) => {
+    table.uuid('user_uuid');
+    table.foreign('user_uuid').references('uuid').inTable('users');
     table.string('token').notNullable();
     table.string('name').nullable();
-    table.unique(['userUuid', 'token']);
+    table.unique(['user_uuid', 'token']);
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('authorizationsTokens');
+  return knex.schema.dropTable('authorizations_tokens');
 };

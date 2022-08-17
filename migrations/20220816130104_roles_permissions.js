@@ -1,12 +1,12 @@
 exports.up = function (knex) {
   return knex.schema.createTable('roles_permissions', (table) => {
-    table.uuid('permissionUuid').notNullable();
-    table.foreign('permissionUuid').references('uuid').inTable('permissions');
+    table.uuid('permission_uuid').notNullable();
+    table.foreign('permission_uuid').references('uuid').inTable('permissions');
 
-    table.uuid('roleUuid').notNullable();
-    table.foreign('roleUuid').references('uuid').inTable('roles');
+    table.uuid('role_uuid').notNullable();
+    table.foreign('role_uuid').references('uuid').inTable('roles');
 
-    table.unique(['roleUuid', 'permissionUuid']);
+    table.unique(['role_uuid', 'permission_uuid']);
   });
 };
 
