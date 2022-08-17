@@ -1,6 +1,6 @@
-exports.up = function ({ schema }) {
-  return schema.createTable('roles', (table) => {
-    table.uuid('uuid').primary();
+exports.up = function (knex) {
+  return knex.schema.createTable('roles', (table) => {
+    table.uuid('uuid').primary().defaultTo(knex.raw('(UUID())')).notNullable();
     table.string('name', 100).unique().notNullable();
     table.string('description', 500).nullable();
   });

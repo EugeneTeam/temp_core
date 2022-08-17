@@ -1,7 +1,7 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { KnexModule } from 'nest-knexjs';
-
+import Knex from 'knex';
 
 @Module({
   imports: [
@@ -23,4 +23,9 @@ import { KnexModule } from 'nest-knexjs';
     }),
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private readonly knex: Knex) {}
+  onApplicationBootstrap(): any {
+    this.knex.on('query', console.log);
+  }
+}
