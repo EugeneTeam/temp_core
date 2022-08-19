@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package mailer;
+
+service MailerService {
+  rpc SendEmail (Text) returns (Boolean) {}
+}
+
+message Text {
+  string text = 1;
+}
+
+message Boolean {
+  bool result = 1;
+}

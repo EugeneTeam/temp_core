@@ -1,12 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { KnexModule } from 'nest-knexjs';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
+import { PermissionsModule } from './permissions/permissions.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
       isGlobal: true,
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      debug: true,
+      playground: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     KnexModule.forRoot({
       config: {
@@ -20,6 +30,8 @@ import { KnexModule } from 'nest-knexjs';
         },
       },
     }),
+    PermissionsModule,
   ],
+  controllers: [],
 })
 export class AppModule {}
