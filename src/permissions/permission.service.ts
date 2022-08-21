@@ -1,26 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreatePermissionArguments } from './arguments/create-permission.arguments';
+import { CreatePermissionArgument } from './arguments/create-permission.argument';
 import { InjectModel } from 'nest-knexjs';
 import { Knex } from 'knex';
+
 import { IPermission } from './interfaces/permission.interface';
-import { UpdatePermissionArguments } from './arguments/update-permission.arguments';
+import { UpdatePermissionArgument } from './arguments/update-permission.argument';
 import { GetPermissionListArgument } from './arguments/get-permission-list.argument';
 import { PermissionListType } from './types/permission-list.type';
-import { ICount } from './interfaces/count.interface';
+import { ICount } from '../interfaces/count.interface';
 
 @Injectable()
-export class PermissionsService {
+export class PermissionService {
   private readonly currentTableName = 'permissions';
 
   constructor(@InjectModel() private knex: Knex) {}
 
   async createPermission(
-    input: CreatePermissionArguments,
+    input: CreatePermissionArgument,
   ): Promise<IPermission[]> {
     return this.knex.table(this.currentTableName).insert(input).returning('*');
   }
 
-  updatePermission(input: UpdatePermissionArguments): Promise<IPermission[]> {
+  updatePermission(input: UpdatePermissionArgument): Promise<IPermission[]> {
     return this.knex
       .table(this.currentTableName)
       .where('uuid', input.uuid)
@@ -32,10 +33,7 @@ export class PermissionsService {
   }
 
   removePermission(uuid: string): Promise<number> {
-    return this.knex
-      .table(this.currentTableName)
-      .where('uuid', uuid)
-      .del();
+    return this.knex.table(this.currentTableName).where('uuid', uuid).del();
   }
 
   async getListAndCount(

@@ -3,18 +3,18 @@ import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { PAGINATION } from '../../constants/pagination.constant';
 
 @ArgsType()
-export class GetPermissionListArgument {
+export class GetRoleListArgument {
   @Field(() => Int, {
     nullable: true,
-    defaultValue: PAGINATION.PERMISSION.DEFAULT.LIMIT,
-    description: `Default value for limit = ${PAGINATION.PERMISSION.DEFAULT.LIMIT}`,
+    defaultValue: PAGINATION.ROLE.DEFAULT.LIMIT,
+    description: `Default value for limit = ${PAGINATION.ROLE.DEFAULT.LIMIT}`,
   })
   limit?: number;
 
   @Field(() => Int, {
     nullable: true,
-    defaultValue: PAGINATION.PERMISSION.DEFAULT.OFFSET,
-    description: `Default value for offset = ${PAGINATION.PERMISSION.DEFAULT.OFFSET}`,
+    defaultValue: PAGINATION.ROLE.DEFAULT.OFFSET,
+    description: `Default value for offset = ${PAGINATION.ROLE.DEFAULT.OFFSET}`,
   })
   offset?: number;
 

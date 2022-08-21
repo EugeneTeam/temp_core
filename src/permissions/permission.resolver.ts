@@ -1,21 +1,21 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { PermissionType } from './types/permission.type';
-import { CreatePermissionArguments } from './arguments/create-permission.arguments';
-import { PermissionsService } from './permissions.service';
+import { CreatePermissionArgument } from './arguments/create-permission.argument';
+import { PermissionService } from './permission.service';
 import { IPermission } from './interfaces/permission.interface';
-import { UpdatePermissionArguments } from './arguments/update-permission.arguments';
+import { UpdatePermissionArgument } from './arguments/update-permission.argument';
 import { PermissionListType } from './types/permission-list.type';
 import { GetPermissionListArgument } from './arguments/get-permission-list.argument';
 import { isNotFoundExceptions } from '../error-handler/error-handler.utils';
 
 @Resolver(() => PermissionType)
-export class PermissionsResolver {
-  constructor(private readonly permissionService: PermissionsService) {}
+export class PermissionResolver {
+  constructor(private readonly permissionService: PermissionService) {}
 
   @Mutation(() => PermissionType)
   async createPermission(
-    @Args() input: CreatePermissionArguments,
+    @Args() input: CreatePermissionArgument,
   ): Promise<IPermission | never> {
     const permissions: IPermission[] =
       await this.permissionService.createPermission(input);
@@ -27,7 +27,7 @@ export class PermissionsResolver {
 
   @Mutation(() => PermissionType)
   async updatePermission(
-    @Args() input: UpdatePermissionArguments,
+    @Args() input: UpdatePermissionArgument,
   ): Promise<IPermission | never> {
     const permissions: IPermission[] =
       await this.permissionService.updatePermission(input);

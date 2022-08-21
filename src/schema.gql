@@ -1,0 +1,59 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PermissionType {
+  uuid: String!
+  name: String!
+  description: String
+}
+
+type PermissionListType {
+  permissions: [PermissionType!]
+  count: Int
+}
+
+type RoleType {
+  uuid: String!
+  name: String!
+  description: String
+}
+
+type RoleListType {
+  roles: [RoleType!]
+  count: Int
+}
+
+type Query {
+  getPermissionList(
+    """Default value for limit = 10"""
+    limit: Int = 10
+
+    """Default value for offset = 0"""
+    offset: Int = 0
+
+    """Search by full or partial match"""
+    name: String
+  ): PermissionListType!
+  getPermissionByUuid(uuid: String!): PermissionType!
+  getRoleList(
+    """Default value for limit = 10"""
+    limit: Int = 10
+
+    """Default value for offset = 0"""
+    offset: Int = 0
+
+    """Search by full or partial match"""
+    name: String
+  ): RoleListType!
+  getRoleByUuid(uuid: String!): RoleType!
+}
+
+type Mutation {
+  createPermission(name: String!, description: String): PermissionType!
+  updatePermission(name: String!, description: String, uuid: String!): PermissionType!
+  removePermission(uuid: String!): Boolean!
+  createRole(name: String!, description: String): RoleType!
+  updateRole(name: String!, description: String, uuid: String!): RoleType!
+  removeRole(uuid: String!): Boolean!
+}

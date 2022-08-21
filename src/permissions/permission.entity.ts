@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class PermissionsEntity {
+export class PermissionEntity {
   @Field(() => String)
   uuid: string;
 

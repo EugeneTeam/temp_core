@@ -5,9 +5,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 
-import { PermissionsModule } from './permissions/permissions.module';
+import { PermissionModule } from './permissions/permission.module';
 import { MailerModule } from './mailer/mailer.module';
 import { errorHandler } from './error-handler/error-handler';
+import { RoleModule } from './roles/role.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { errorHandler } from './error-handler/error-handler';
         },
       },
     }),
-    PermissionsModule,
+    PermissionModule,
+    RoleModule,
     MailerModule,
   ],
   controllers: [],
