@@ -1,6 +1,6 @@
 exports.up = function (knex) {
   return knex.schema.createTable('characteristics', (table) => {
-    table.uuid('uuid').primary().defaultTo(knex.raw('(UUID())'));
+    table.uuid('uuid').primary().defaultTo(knex.raw('(gen_random_uuid())'));
     table.string('name', 100).notNullable();
     table.string('value', 100).notNullable();
     table.string('description', 500).nullable();

@@ -1,6 +1,10 @@
 exports.up = function (knex) {
   return knex.schema.createTable('permissions', (table) => {
-    table.uuid('uuid').primary().defaultTo(knex.raw('(UUID())')).notNullable();
+    table
+      .uuid('uuid')
+      .primary()
+      .defaultTo(knex.raw('(gen_random_uuid())'))
+      .notNullable();
     table.string('name', 100).unique().notNullable();
     table.string('description', 500).nullable();
   });

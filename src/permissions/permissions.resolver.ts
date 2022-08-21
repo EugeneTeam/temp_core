@@ -1,33 +1,59 @@
-import { Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { PermissionType } from './types/permission.type';
-import { OnModuleInit } from '@nestjs/common';
-import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
-import { join } from 'path';
-import { TestRes } from './types/test.res';
+import { CreatePermissionArguments } from './arguments/create-permission.arguments';
+import { PermissionsService } from './permissions.service';
+import { IPermission } from './interfaces/permission.interface';
+import { UpdatePermissionArguments } from './arguments/update-permission.arguments';
+import { PermissionListType } from './types/permission-list.type';
+import { GetPermissionListArgument } from './arguments/get-permission-list.argument';
+import { isNotFoundExceptions } from '../error-handler/error-handler.utils';
 
 @Resolver(() => PermissionType)
-export class PermissionsResolver implements OnModuleInit {
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'mailer',
-      protoPath: join(__dirname, 'mailer.proto'),
-    },
-  })
-  private client: ClientGrpc;
+export class PermissionsResolver {
+  constructor(private readonly permissionService: PermissionsService) {}
 
-  private service: any;
-
-  onModuleInit(): any {
-    this.service = this.client.getService<any>('MailerService');
+  @Mutation(() => PermissionType)
+  async createPermission(
+    @Args() input: CreatePermissionArguments,
+  ): Promise<IPermission | never> {
+    const permissions: IPermission[] =
+      await this.permissionService.createPermission(input);
+    return isNotFoundExceptions<IPermission>(
+      permissions,
+      'Permission not found.',
+    );
   }
 
-  @Query(() => TestRes)
-  async test(): Promise<TestRes> {
-    return new Promise((resolve, reject) => {
-      this.service.SendEmail({ text: 'hello' }).subscribe((val) => {
-        resolve(val);
-      });
-    });
+  @Mutation(() => PermissionType)
+  async updatePermission(
+    @Args() input: UpdatePermissionArguments,
+  ): Promise<IPermission | never> {
+    const permissions: IPermission[] =
+      await this.permissionService.updatePermission(input);
+    return isNotFoundExceptions<IPermission>(
+      permissions,
+      'Permission not found.',
+    );
+  }
+
+  @Mutation(() => Boolean)
+  async removePermission(@Args('uuid') uuid: string): Promise<boolean | never> {
+    const permission: number = await this.permissionService.removePermission(
+      uuid,
+    );
+    return isNotFoundExceptions(permission, 'Permission not found.');
+  }
+
+  @Query(() => PermissionListType)
+  getPermissionList(
+    @Args() input: GetPermissionListArgument,
+  ): Promise<PermissionListType> {
+    return this.permissionService.getListAndCount(input);
+  }
+
+  @Query(() => PermissionType)
+  getPermissionByUuid(@Args('uuid') uuid: string): Promise<PermissionType> {
+    return this.permissionService.getPermissionByUuid(uuid);
   }
 }

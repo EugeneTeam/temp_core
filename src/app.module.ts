@@ -4,7 +4,10 @@ import { KnexModule } from 'nest-knexjs';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+
 import { PermissionsModule } from './permissions/permissions.module';
+import { MailerModule } from './mailer/mailer.module';
+import { errorHandler } from './error-handler/error-handler';
 
 @Module({
   imports: [
@@ -17,10 +20,11 @@ import { PermissionsModule } from './permissions/permissions.module';
       debug: true,
       playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      formatError: (error) => errorHandler(error),
     }),
     KnexModule.forRoot({
       config: {
-        client: 'mysql',
+        client: 'postgres',
         connection: {
           host: process.env.MYSQL_HOST,
           port: Number(process.env.MYSQL_PORT),
@@ -31,6 +35,7 @@ import { PermissionsModule } from './permissions/permissions.module';
       },
     }),
     PermissionsModule,
+    MailerModule,
   ],
   controllers: [],
 })

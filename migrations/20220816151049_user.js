@@ -4,7 +4,7 @@ exports.up = function (knex) {
       .uuid('uuid')
       .index()
       .primary()
-      .defaultTo(knex.raw('(UUID())'))
+      .defaultTo(knex.raw('(gen_random_uuid())'))
       .notNullable();
     table.enu('status', ['ACTIVE', 'INACTIVE', 'BANNED']).defaultTo('INACTIVE');
     table.string('activation_token').notNullable();
